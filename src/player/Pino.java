@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 public class Pino {
 	private int x, y;
 	private int dx, dy;
-	private String tx = "-"; 
+	private String player = ""; 
 
 	
 	private JPanel janela;
@@ -34,6 +34,7 @@ public class Pino {
 		this.janela = janela;
 		this.dx = x;
 		this.dy = y;
+		this.player = player;
 				
 		if(player.toLowerCase().equals("p1")) {
 			iconeImagem = new ImageIcon("Imagens//usuarioAzul.png");
@@ -65,7 +66,12 @@ public class Pino {
 	public int getY() {
 		return y;
 	}
-
+	
+	public void movePino(int x, int y) {
+		dx = x;
+		dy = y;
+	}
+	
 	public Image getImagem() {
 		return iconeImagem.getImage();
 	}
@@ -76,6 +82,10 @@ public class Pino {
 
 	public int getLargura() {
 		return largura;
+	}
+	
+	public String getPlayer() {
+		return player;
 	}
 	
 	public boolean mouseClicou() {

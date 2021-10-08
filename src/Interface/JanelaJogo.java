@@ -9,7 +9,7 @@ public class JanelaJogo extends JFrame {
 
 	public JanelaJogo() {
 		
-		PainelTabuleiro tabuleiro = new PainelTabuleiro();
+		PainelTabuleiro tabuleiro = new PainelTabuleiro("p1");
 		
 		add(tabuleiro);
 		

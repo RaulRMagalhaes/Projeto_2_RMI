@@ -18,25 +18,29 @@ import player.Pino;
 public class PainelTabuleiro extends JPanel implements ActionListener {
 	
 	private Image fundo, tabuleiro;
+	private String player = "";
 	private int altura;
 	private int largura;
 	private Point posicaoTabuleiro[][] = new Point[6][6];
 	private int pinosTabuleiro[][] = new int[6][6];
+	private Pino matrizPinos[][] = new Pino[6][6];
+
 	ArrayList<Pino> listaPlayer = new ArrayList<>();
 
 	private Timer timer;
 	
-	public PainelTabuleiro() {
+	public PainelTabuleiro(String player) {
+		this.player = player;
 		setFocusable(true);
 		setDoubleBuffered(true);
 		
 		inicializaImagens();
 		
-		inicializaTabuleiro("p1");
+		inicializaTabuleiro(player);
 		
 		addMouseListener(new ControleMouseAdapter());
 		
-		new AtualizaTabuleiro().start();
+		new movePinosTabuleiro().start();
 		
 		timer = new Timer(5, this);
 		timer.start();
@@ -47,13 +51,21 @@ public class PainelTabuleiro extends JPanel implements ActionListener {
 		grafico.drawImage(fundo, 0, 0, null);
 		grafico.drawImage(tabuleiro, 0, 0, null);
 		
-		for(Pino pinos : listaPlayer) {
-			grafico.drawImage(pinos.getImagem(), pinos.getX(), pinos.getY(), this);
+		for(Pino[] i : matrizPinos){										//
+			for(Pino pino: i) {
+				if(pino != null) {
+					grafico.drawImage(pino.getImagem(), pino.getX(), pino.getY(), this);
+				}
+			}
 		}
 		
-		for(Pino pinos : listaPlayer) {
-			if(pinos.mouseClicou()) {
-				grafico.drawImage(pinos.getImagem(), pinos.getX(), pinos.getY(), this);
+		for(Pino[] i : matrizPinos){										//
+			for(Pino pino: i) {
+				if(pino != null) {
+					if(pino.mouseClicou()) {
+						grafico.drawImage(pino.getImagem(), pino.getX(), pino.getY(), this);
+					}
+				}
 			}
 		}
 		
@@ -62,8 +74,12 @@ public class PainelTabuleiro extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		for(Pino pinos : listaPlayer) {
-			pinos.update();
+		for(Pino[] i : matrizPinos){										//
+			for(Pino pino: i) {
+				if(pino != null) {
+					pino.update();
+				}
+			}
 		}
 		repaint();
 	}
@@ -80,40 +96,58 @@ public class PainelTabuleiro extends JPanel implements ActionListener {
 			
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			for(Pino pinos : listaPlayer) {
-				pinos.mouseReleased(e);
+			for(Pino[] i : matrizPinos){										//
+				for(Pino pino: i) {
+					if(pino != null) {
+						pino.mouseReleased(e);
+					}
+				}
 			}
 		}
 		
 		@Override
 		public void mousePressed(MouseEvent e) {
-			for(Pino pinos : listaPlayer) {
-				pinos.mousePressed(e);
+			for(Pino[] i : matrizPinos){										//
+				for(Pino pino: i) {
+					if(pino != null) {
+						pino.mousePressed(e);
+					}
+				}
 			}
 		}
 						
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			for(Pino pinos : listaPlayer) {
-				pinos.mouseEntered(e);
+			for(Pino[] i : matrizPinos){										//
+				for(Pino pino: i) {
+					if(pino != null) {
+						pino.mouseEntered(e);
+					}
+				}
 			}
 		}
 		
 		@Override
 		public void mouseExited(MouseEvent e) {
-			for(Pino pinos : listaPlayer) {
-				pinos.mouseExited(e);
+			for(Pino[] i : matrizPinos){										//
+				for(Pino pino: i) {
+					if(pino != null) {
+						pino.mouseExited(e);
+					}
+				}
 			}
 		}
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			for(Pino pinos : listaPlayer) {
-				pinos.mouseClicked(e);
+			for(Pino[] i : matrizPinos){										//
+				for(Pino pino: i) {
+					if(pino != null) {
+						pino.mouseClicked(e);
+					}
+				}
 			}
-			
-			System.out.println("\nClicou: " + e.getX() + "," + e.getY() + "\n");
-
+			System.out.println("\nClicou: " + e.getX() + "," + e.getY() + "\n");  //apagar
 		}
 		
 	}
@@ -132,7 +166,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener {
 	}
 	
 	public void inicializaTabuleiro(String player) {
-		//posicoes dos pinos no tabuleiro
+		// posicoes dos pinos no tabuleiro
 		int dist = 37, linhaA = 0, linhaB = 0;
 		
 		for(int y=0; y<posicaoTabuleiro.length; y++){
@@ -141,12 +175,12 @@ public class PainelTabuleiro extends JPanel implements ActionListener {
 			}
 		}
 
-		for(Point[] point : posicaoTabuleiro){
-			for(Point pos: point) {
-				System.out.print("{" + pos.x + "," + pos.y + "}, ");
-			}
-			System.out.println("");
-		}
+		for(Point[] point : posicaoTabuleiro){                          //
+			for(Point pos: point) { 									//
+				System.out.print("{" + pos.x + "," + pos.y + "}, ");    // apagar 
+			}															//
+			System.out.println("");										//
+		}																//
 		
 		/* posicaoTabuleiro
 		{{108,108}, {145,108}, {182,108}, {219,108}, {256,108}, {293,108}, 
@@ -166,92 +200,151 @@ public class PainelTabuleiro extends JPanel implements ActionListener {
 			linhaB = 1;
 		}
 		
-		for(int i=0; i<pinosTabuleiro.length; i++){
-			for(int j=0; j<pinosTabuleiro[i].length; j++) {
+		for(int i=0; i<matrizPinos.length; i++){
+			for(int j=0; j<matrizPinos[i].length; j++) {
+				
+				int x = posicaoTabuleiro[i][j].x;
+				int y = posicaoTabuleiro[i][j].y;
 					
 				if(i == linhaA || i == linhaB) {
-					pinosTabuleiro[i][j] = 1;
+					matrizPinos[i][j] = new Pino(this, x, y, player);
 				}else {
-					pinosTabuleiro[i][j] = 0;
+					matrizPinos[i][j] = null;
 				}
 
 			}
 		}
 		
-		for(int[] i : pinosTabuleiro){
-			for(int j: i) {
-				System.out.print("{" + j + "}, ");
-			}
-			System.out.println("");
-		}
+		for(Pino[] i : matrizPinos){										//
+			for(Pino posPino: i) {									//
+				if(posPino != null) {								//
+					System.out.print("{" + 1 + "}, ");				//	
+				} else if(posPino == null){							// Apagar
+					System.out.print("{" + 0 + "}, ");				//
+				}													//
+			}														//
+			System.out.println("");									//
+		}															//
 		
-		/* 
-		  posicoes iniciais p1
-		{{1}, {1}, {1}, {1}, {1}, {1}, 
-		 {1}, {1}, {1}, {1}, {1}, {1}, 
-		 {0}, {0}, {0}, {0}, {0}, {0}, 
-		 {0}, {0}, {0}, {0}, {0}, {0}, 
-		 {0}, {0}, {0}, {0}, {0}, {0}, 
-		 {0}, {0}, {0}, {0}, {0}, {0}}
-		 
-		 * 
-		 * posicoes iniciais p2
+		/*  
+		 posicoes iniciais p1
 		{{0}, {0}, {0}, {0}, {0}, {0}, 
 		 {0}, {0}, {0}, {0}, {0}, {0}, 
 		 {0}, {0}, {0}, {0}, {0}, {0}, 
 		 {0}, {0}, {0}, {0}, {0}, {0}, 
 		 {1}, {1}, {1}, {1}, {1}, {1}, 
 		 {1}, {1}, {1}, {1}, {1}, {1}}
+		 
+		  posicoes iniciais p2
+		{{1}, {1}, {1}, {1}, {1}, {1}, 
+		 {1}, {1}, {1}, {1}, {1}, {1}, 
+		 {0}, {0}, {0}, {0}, {0}, {0}, 
+		 {0}, {0}, {0}, {0}, {0}, {0}, 
+		 {0}, {0}, {0}, {0}, {0}, {0}, 
+		 {0}, {0}, {0}, {0}, {0}, {0}}
 		 */
-		
-		//cria os pinos nas posicoes iniciais de p1 ou p2
-		for(int i=0; i<pinosTabuleiro.length; i++){
-			for(int j=0; j<pinosTabuleiro[i].length; j++) {
-				if(pinosTabuleiro[i][j] == 1) {
-					int x = posicaoTabuleiro[i][j].x;
-					int y = posicaoTabuleiro[i][j].y;
-					
-					listaPlayer.add(new Pino(this, x, y, player));
-				}
-			}
-		}
-		
 	}
 		
-	public void atualizaPinosTabuleiro() {
-		for(int i=0; i<pinosTabuleiro.length; i++){
-			for(int j=0; j<pinosTabuleiro[i].length; j++) {
-				
-				pinosTabuleiro[i][j] = 0;
-				int x = posicaoTabuleiro[i][j].x;
-				int y = posicaoTabuleiro[i][j].y;
-				
-				for(Pino pino : listaPlayer) {									
-					if(pino.getPinoPos().x == x && pino.getPinoPos().y == y) {
-						pinosTabuleiro[i][j] = 1;
-						System.out.println("   Achou uma pino na posicao [" + i + "," + j + "]");    //apagar
-					}
+	public void atualizaPinosTabuleiro() {		
+		for(Pino[] i : matrizPinos){
+			for(Pino posPino: i) {
+				if(posPino !=null) {
+					System.out.print("{" + 1 + "}, ");
+				} else {
+					System.out.print("{" + 0 + "}, ");
 				}
 			}
 			System.out.println("");
-  		}
-		System.out.println("");
-		
-		
-		for(int[] i : pinosTabuleiro){
-			for(int j: i) {
-				System.out.print("{" + j + "}, ");
-			}
-			System.out.println("");
 		}
-		
+		System.out.println("");
+
 	}
 	
-	public class AtualizaTabuleiro extends Thread {	
+	public void movePinos (Thread t) {
+		//
+	}
+	
+	public class movePinosTabuleiro extends Thread {	
 		public void run() {
 			while(true) {
-				try { Thread.sleep(500); } catch (InterruptedException e) {}
-				atualizaPinosTabuleiro();
+				try {
+					sleep(30);
+				
+					int raio = 15;
+					int dist = 37;
+					for(int i=0; i<matrizPinos.length; i++){
+						for(int j=0; j<matrizPinos[i].length; j++) {
+	
+							if(matrizPinos[i][j] != null) {
+								if(matrizPinos[i][j].mouseClicou()) {
+															
+									int xInicialPino = posicaoTabuleiro[i][j].x;
+									int yInicialPino = posicaoTabuleiro[i][j].y;
+										
+									while(matrizPinos[i][j].mouseClicou()) {
+										System.out.println("esperando soltar pino");
+									}
+									
+									System.out.print("  SOLTOU");
+	
+									int x = matrizPinos[i][j].getMousePos().x;
+									int y = matrizPinos[i][j].getMousePos().y;
+	
+									System.out.println("     " + x + "," + y);
+									
+									boolean pinoMudouParaPosicaoValida = false;
+									for(Point[] point : posicaoTabuleiro){                          
+										for(Point pos: point) { 					
+											int distCima = pos.y - raio; 
+							 				int distBaixo = pos.y + raio;
+											int distEsquerda = pos.x - raio; 
+											int distDireita = pos.x + raio;
+												
+											if(x >= distEsquerda && x <= distDireita && y >= distCima && y<= distBaixo) {
+												int novaLinha = (pos.x - 108)/dist;
+												int novaColuna = (pos.y - 108)/dist;
+
+												System.out.println("soltou na posição [" + novaLinha + "," + novaColuna + "]"); //apagar
+												
+												if(matrizPinos[novaLinha][novaColuna] == null) {
+													System.out.println("posiçao vazia");
+													pinoMudouParaPosicaoValida = true;
+													matrizPinos[i][j].movePino(pos.x, pos.y);
+													matrizPinos[novaLinha][novaColuna] = matrizPinos[i][j];
+													matrizPinos[i][j] = null;
+												} else if (matrizPinos[novaLinha][novaColuna] != null) {
+													System.out.print("posiçao ocupada");
+
+													if(matrizPinos[i][j].getPlayer().toLowerCase().equals(player)) {
+														System.out.println(" por um ALIADO");
+
+														matrizPinos[i][j].movePino(xInicialPino, yInicialPino);
+													} else if (!matrizPinos[i][j].getPlayer().toLowerCase().equals(player)) {
+														System.out.println(" por um ADVERSÁRIO");
+
+														pinoMudouParaPosicaoValida = true;
+														matrizPinos[i][j].movePino(pos.x, pos.y);
+														matrizPinos[novaLinha][novaColuna] = matrizPinos[i][j];
+														matrizPinos[i][j] = null;
+													}
+												}
+												
+													
+											} 
+										}															
+									}
+									if (!pinoMudouParaPosicaoValida) {
+										matrizPinos[i][j].movePino(xInicialPino, yInicialPino);
+									}
+								}				
+							}
+						}
+					}
+				
+				 } catch (InterruptedException e) {}
+				
+				
+				//atualizaPinosTabuleiro();
 			}	
 		}
 	}
