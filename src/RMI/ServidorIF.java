@@ -9,6 +9,7 @@ public interface ServidorIF extends Remote {
   
   void registraCliente(String urlCliente) throws  RemoteException, MalformedURLException, NotBoundException;
   
+  @Deprecated
   void transmiteMsg(String urlClienteOrigem, String mensagem) throws  RemoteException;
-  	//(Cliente clienteEnviou, 
+
 }
