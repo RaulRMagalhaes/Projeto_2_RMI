@@ -4,7 +4,7 @@ package RMI;
 import java.rmi.Remote; 
 import java.rmi.RemoteException;
 
-public interface InterfacePlayer1 extends Remote {
+public interface ClienteIF extends Remote {
 
   String getMsgEnviada() throws  RemoteException;
   

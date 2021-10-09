@@ -6,9 +6,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class Servidor extends UnicastRemoteObject implements InterfaceServidor {
+public class Servidor extends UnicastRemoteObject implements ServidorIF {
 	
-	private ArrayList<InterfacePlayer1> listaClientes = new ArrayList<InterfacePlayer1>();
+	private ArrayList<ClienteIF> listaClientes = new ArrayList<ClienteIF>();
 	private ArrayList<String> listaUrlClientes = new ArrayList<String>();
 
 	public Servidor() throws RemoteException{
@@ -23,8 +23,8 @@ public class Servidor extends UnicastRemoteObject implements InterfaceServidor {
 		
 		int i = 0;
 		if(listaClientes.size() >= 2) {			
-			InterfacePlayer1 p1 = listaClientes.get(i);
-			InterfacePlayer1 p2 = listaClientes.get(i+1);
+			ClienteIF p1 = listaClientes.get(i);
+			ClienteIF p2 = listaClientes.get(i+1);
 			
 			//System.out.println("1");
 			
@@ -45,7 +45,7 @@ public class Servidor extends UnicastRemoteObject implements InterfaceServidor {
 	public synchronized void registraCliente(String urlCliente) throws RemoteException, MalformedURLException, NotBoundException {
 		listaUrlClientes.add(urlCliente);
 		
-		InterfacePlayer1 player = (InterfacePlayer1) Naming.lookup(urlCliente);
+		ClienteIF player = (ClienteIF) Naming.lookup(urlCliente);
 		listaClientes.add(player);
 	}
 	

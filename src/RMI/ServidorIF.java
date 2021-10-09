@@ -5,7 +5,7 @@ import java.rmi.NotBoundException;
 import java.rmi.Remote; 
 import java.rmi.RemoteException;
 
-public interface InterfaceServidor extends Remote {
+public interface ServidorIF extends Remote {
   
   void registraCliente(String urlCliente) throws  RemoteException, MalformedURLException, NotBoundException;
   

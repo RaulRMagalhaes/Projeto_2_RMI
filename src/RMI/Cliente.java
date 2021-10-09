@@ -6,10 +6,10 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Random;
 
-public class Cliente extends UnicastRemoteObject implements InterfacePlayer1, Runnable{
+public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 	String nomeCliente = "";
 	String urlCliente = null;
-	InterfaceServidor servidor = null;
+	ServidorIF servidor = null;
 	String msgEnviada = "";
 	String msgRecebida = "";
 	
@@ -73,7 +73,7 @@ public class Cliente extends UnicastRemoteObject implements InterfacePlayer1, Ru
 	
 	private void conectaCliente() {
 		try {   
-			servidor = (InterfaceServidor) Naming.lookup("//localhost/Servidor");
+			servidor = (ServidorIF) Naming.lookup("//localhost/Servidor");
 			System.out.println("Servidor Localizado!");
 		} catch(Exception e){System.err.println("Erro ao conectar cliente - Servidor não encontrado no servidor de nomes ou Servidor de nomes fora do ar");}
 		//System.exit(0);
