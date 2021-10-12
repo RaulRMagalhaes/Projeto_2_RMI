@@ -100,7 +100,7 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 		try {
 			oponente.recebeMsg(this.msgEnviada);
 		} catch (RemoteException e) {
-			System.err.println("Chat - Erro de comunicacao \n");
+			System.out.println("Chat - Erro de comunicacao. Oponente desconectado\n");
 			e.printStackTrace();
 		}
 	}
