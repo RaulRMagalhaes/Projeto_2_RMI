@@ -14,8 +14,8 @@ public class Partida implements Runnable{
 		player1.setOponente(player2);
 		player2.setOponente(player1);
 		
-		player1.setTipoDePlayer("p1");
-		player2.setTipoDePlayer("P2");
+		//player1.setTipoDePlayer("p1");
+		//player2.setTipoDePlayer("P2");
 		
 		player1.setMinhaVez(true);
 		player2.setMinhaVez(false);

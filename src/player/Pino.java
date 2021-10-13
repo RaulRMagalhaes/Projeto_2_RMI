@@ -1,17 +1,13 @@
 package player;
 
-import java.awt.Color;
 import java.awt.Image;
-import java.awt.MouseInfo;
 import java.awt.Point;
-import java.awt.PointerInfo;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 
 public class Pino {
 	private int x, y;
@@ -131,7 +127,7 @@ public class Pino {
 				
 				if(mouseClicou && mouseNatela) {
 					mousePos =  janela.getMousePosition();
-					System.out.println("Posicao mouse: " + mousePos.x + "," + mousePos.y); 
+					//System.out.println("Posicao mouse: " + mousePos.x + "," + mousePos.y); 
 					dx = mousePos.x ;					
 					dy = mousePos.y ;
 				}	

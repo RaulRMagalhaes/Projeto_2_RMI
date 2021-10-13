@@ -1,24 +1,48 @@
 package Interface;
 
+import java.rmi.RemoteException;
+
 import javax.swing.JFrame;
 
+import RMI.Cliente;
 import fase.PainelTabuleiro;
-import player.Pino;
 
 public class JanelaJogo extends JFrame {
-
-	public JanelaJogo() {
-		
-		PainelTabuleiro tabuleiro = new PainelTabuleiro("p1");
-		
-		add(tabuleiro);
-		
-		setTitle("Jogo");
-		setSize(tabuleiro.getLargura(), tabuleiro.getAltura());
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		this.setResizable(false);
-		setVisible(true);
+	
+	Cliente player = null;
+	PainelTabuleiro tabuleiro = null;
+	
+	public JanelaJogo() {	
+		inicializaJanelaPrincipal();
+		inicializaPlayer();
+		inicializaPainelJogo();
+	
 	}
 	
+	private void inicializaJanelaPrincipal() {
+		this.setTitle("Jogo");
+		//setSize(1000, 500);
+		//setSize(tabuleiro.getLargura(), tabuleiro.getAltura());
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+		this.setVisible(true);
+	}
+	
+	private void inicializaPlayer() {
+		try {
+			player = new Cliente();
+		} catch (RemoteException e) { e.printStackTrace();}
+	}
+
+	private void inicializaPainelJogo() {
+		try {
+			tabuleiro = new PainelTabuleiro(player);
+			this.add(tabuleiro);
+			this.setTitle(player.getNomeCliente());
+			this.setSize(tabuleiro.getLargura(), tabuleiro.getAltura());
+
+		} catch (RemoteException e) {e.printStackTrace();}
+	
+	}
 }
