@@ -5,7 +5,6 @@ import java.rmi.RemoteException;
 import javax.swing.JFrame;
 
 import RMI.Cliente;
-import fase.PainelTabuleiro;
 
 public class JanelaJogo extends JFrame {
 	
@@ -15,14 +14,12 @@ public class JanelaJogo extends JFrame {
 	public JanelaJogo() {	
 		inicializaJanelaPrincipal();
 		inicializaPlayer();
-		inicializaPainelJogo();
-	
+		inicializaPainelJogo();		
 	}
 	
 	private void inicializaJanelaPrincipal() {
 		this.setTitle("Jogo");
-		//setSize(1000, 500);
-		//setSize(tabuleiro.getLargura(), tabuleiro.getAltura());
+
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);

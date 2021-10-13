@@ -24,8 +24,6 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
       	while(true){
       		try {Thread.sleep(100);} catch (InterruptedException e1) {}
       		
-      		//System.out.println("num clientes: " + listaClientes.size());
-
       		if(listaClientes.size() == minimoParaNovaPartida) {
       			int i = minimoParaNovaPartida - 2;
       			try {
@@ -33,35 +31,12 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 					minimoParaNovaPartida += 2;
 					System.out.println("\n   Nova partida iniciada: " + listaClientes.get(i).getNomeCliente() + " X " + listaClientes.get(i+1).getNomeCliente() + "\n");
 				} catch (Exception e) {
-					System.err.println("Erro ao criar partidas no servidor");
+					System.out.println("Erro ao criar partidas no servidor");
 					e.printStackTrace();
+					break;
 				}
       		}
       	}
-	}
-	
-	@Deprecated
-	public synchronized void transmiteMsg(String urlClienteOrigem, String mensagem) throws RemoteException {
-		
-		System.out.println("servidor: " + urlClienteOrigem + "/ " + mensagem);
-		
-		int i = 0;
-		if(listaClientes.size() >= 2) {			
-			ClienteIF p1 = listaClientes.get(i);
-			ClienteIF p2 = listaClientes.get(i+1);
-			
-			if(urlClienteOrigem.equals(p1.getUrlCliente())) {
-				System.out.println("quem enviou foi o p1");
-				p2.recebeMsg(mensagem);
-			} else if(urlClienteOrigem.equals(p2.getUrlCliente())) {
-				System.out.println("quem enviou foi o p2");
-				p1.recebeMsg(mensagem);
-			} else {
-				System.out.println("URL_CLIENTE não serve pra comparar com o objeto remoto");
-			}
-		}
-		
-		
 	}
 	
 	public synchronized void registraCliente(String urlCliente) throws RemoteException, MalformedURLException, NotBoundException {

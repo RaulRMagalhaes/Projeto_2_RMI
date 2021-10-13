@@ -22,6 +22,7 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 	String msgStatusPartida = "Aguardando oponente";
 	String msgStatusTurnoPartida = "";
 	String [][] matrizPinos = null;
+	Pino[][] matrizPinosTabuleiro = null;
 	
 	public Cliente() throws RemoteException {
 		
@@ -85,8 +86,17 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 		return pontos;
 	}
 
-	private void setPontos(int pontos){
+	public void setPontos(int pontos){
 		this.pontos = pontos;
+		
+		try {
+			System.out.println("Meus pontos: " + getPontos());
+			
+			if(getPontos() == 12) {
+				
+				System.out.println("VOCE GANHOU!!!");	
+			}
+		} catch (RemoteException e) {}
 	}
 
 	public String getTipoDePlayer() throws RemoteException{
@@ -122,9 +132,6 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 	public String getMsgRecebida() throws RemoteException{
 		return msgRecebida;
 	}
-	
-	
-
 
 	public String getMsgStatusPartida() throws RemoteException{
 		return msgStatusPartida;
@@ -149,7 +156,16 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 	public void setMatrizPinos(String[][] matrizPinos) throws RemoteException{
 		this.matrizPinos = matrizPinos;
 	}
+	
+	
+	public void setMatrizPinosTabuleiro(Pino[][] matrizPinosTabuleiro) throws RemoteException{
+		this.matrizPinosTabuleiro = matrizPinosTabuleiro;
+	}
 
+	public void removePino(int i, int j) throws RemoteException{
+		this.matrizPinosTabuleiro[i][j] = null;
+	}
+	
 	@Override
 	public void run() {
 		while(true) {
@@ -169,7 +185,7 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 			
 			servidor.registraCliente(urlCliente);
 			
-//			System.out.println("Cliente " + nomeCliente + " Registrado!");
+			System.out.println("Cliente " + nomeCliente + " Registrado!");
 			
 			new Thread(this).start();
 
@@ -179,17 +195,8 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 	private void conectaCliente() {
 		try {   
 			servidor = (ServidorIF) Naming.lookup("//localhost/Servidor");
-//			System.out.println("Servidor Localizado!");
+			System.out.println("Servidor Localizado!");
 		} catch(Exception e){System.err.println("Erro ao conectar cliente - Servidor não encontrado no servidor de nomes ou Servidor de nomes fora do ar");}
-		//System.exit(0);
 	}
-	
-	/*
-	public static void main(String args[])  { 
-		try {
-			new Cliente();
-		} catch (RemoteException e) { e.printStackTrace();}
-	}
-	//*/
-	
+		
 }
