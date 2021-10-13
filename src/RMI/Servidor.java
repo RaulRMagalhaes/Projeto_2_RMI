@@ -20,17 +20,17 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 	}
 	
 	private void criaPartidas() {
-		int minParaNovaPartida = 2;
+		int minimoParaNovaPartida = 2;
       	while(true){
-      		try {Thread.sleep(500);} catch (InterruptedException e1) {}
+      		try {Thread.sleep(100);} catch (InterruptedException e1) {}
       		
       		//System.out.println("num clientes: " + listaClientes.size());
 
-      		if(listaClientes.size() == minParaNovaPartida) {
-      			int i = minParaNovaPartida - 2;
+      		if(listaClientes.size() == minimoParaNovaPartida) {
+      			int i = minimoParaNovaPartida - 2;
       			try {
 					new Partida(this, listaClientes.get(i), listaClientes.get(i+1));
-					minParaNovaPartida += 2;
+					minimoParaNovaPartida += 2;
 					System.out.println("\n   Nova partida iniciada: " + listaClientes.get(i).getNomeCliente() + " X " + listaClientes.get(i+1).getNomeCliente() + "\n");
 				} catch (Exception e) {
 					System.err.println("Erro ao criar partidas no servidor");
@@ -70,6 +70,12 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 		ClienteIF player = (ClienteIF) Naming.lookup(urlCliente);
 		listaClientes.add(player);
 		
+		if(listaClientes.size() % 2 != 0) {	
+			player.setTipoDePlayer("p1");
+		} else {
+			player.setTipoDePlayer("p2");
+		}
+		
 		System.out.println(player.getNomeCliente() + " se conectou"); 
 	}
 	
@@ -85,7 +91,7 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 	                        
 	}
 	
-
+	
 	public static void main(String args[]) {
 		try {
 			new Servidor ();

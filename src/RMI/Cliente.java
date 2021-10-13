@@ -6,6 +6,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Random;
 
+import player.Pino;
+
 public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 	String nomeCliente = "";
 	String urlCliente = null;
@@ -19,10 +21,11 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 	String msgRecebida = "";
 	String msgStatusPartida = "Aguardando oponente";
 	String msgStatusTurnoPartida = "";
+	String [][] matrizPinos = null;
 	
-	public Cliente(String nome) throws RemoteException {
+	public Cliente() throws RemoteException {
 		
-		nomeCliente = "Cliente" + new Random().nextInt(1000);
+		nomeCliente = "Cliente_" + new Random().nextInt(1000);
 		
 		conectaCliente();
 		
@@ -138,6 +141,14 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 	private void setMsgStatusTurnoPartida(String msgStatusTurnoPartida) {
 		this.msgStatusTurnoPartida = msgStatusTurnoPartida;
 	}
+	
+	public String[][] getMatrizPinos() throws RemoteException{
+		return this.matrizPinos;
+	}
+
+	public void setMatrizPinos(String[][] matrizPinos) throws RemoteException{
+		this.matrizPinos = matrizPinos;
+	}
 
 	@Override
 	public void run() {
@@ -158,7 +169,7 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 			
 			servidor.registraCliente(urlCliente);
 			
-			System.out.println("Cliente " + nomeCliente + " Registrado!");
+//			System.out.println("Cliente " + nomeCliente + " Registrado!");
 			
 			new Thread(this).start();
 
@@ -168,15 +179,17 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 	private void conectaCliente() {
 		try {   
 			servidor = (ServidorIF) Naming.lookup("//localhost/Servidor");
-			System.out.println("Servidor Localizado!");
+//			System.out.println("Servidor Localizado!");
 		} catch(Exception e){System.err.println("Erro ao conectar cliente - Servidor não encontrado no servidor de nomes ou Servidor de nomes fora do ar");}
 		//System.exit(0);
 	}
 	
+	/*
 	public static void main(String args[])  { 
 		try {
-			new Cliente("And");
+			new Cliente();
 		} catch (RemoteException e) { e.printStackTrace();}
 	}
+	//*/
 	
 }

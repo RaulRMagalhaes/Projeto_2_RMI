@@ -4,6 +4,8 @@ package RMI;
 import java.rmi.Remote; 
 import java.rmi.RemoteException;
 
+import player.Pino;
+
 public interface ClienteIF extends Remote {
 
 	String getNomeCliente() throws RemoteException;
@@ -37,6 +39,10 @@ public interface ClienteIF extends Remote {
 	String getMsgStatusPartida() throws RemoteException;
 	
 	String getMsgStatusTurnoPartida() throws RemoteException;
+	
+	String[][] getMatrizPinos() throws RemoteException;
+
+	void setMatrizPinos(String[][] matrizPinos) throws RemoteException;
  
 }
 
