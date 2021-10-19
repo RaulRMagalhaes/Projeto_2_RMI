@@ -389,11 +389,16 @@ public class PainelTabuleiro extends JPanel implements ActionListener {
 		}
 		
 		public void run() {
+			boolean oponenteInicializado = false;
 			while(true) {
 				try {
 					sleep(10);
 					if(player.getOponente() != null) {
-						sleep(120);
+						
+						if(!oponenteInicializado) {
+							sleep(1000);
+							oponenteInicializado = true;
+						}
 						
 						String[][] matrizPinosOponente = player.getOponente().getMatrizPinos();
 						String tipoDePlayerOponente = player.getOponente().getTipoDePlayer();

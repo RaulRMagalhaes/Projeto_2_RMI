@@ -1,6 +1,7 @@
 package Interface;
 
 import java.rmi.RemoteException;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
@@ -28,7 +29,7 @@ public class JanelaJogo extends JFrame {
 	
 	private void inicializaPlayer() {
 		try {
-			player = new Cliente();
+			player = new Cliente("Cliente_" + new Random().nextInt(1000));
 		} catch (RemoteException e) { e.printStackTrace();}
 	}
 

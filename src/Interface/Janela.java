@@ -3,6 +3,7 @@ package Interface;
 
 import java.awt.CardLayout;
 import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.rmi.RemoteException;
@@ -414,6 +415,18 @@ public class Janela extends javax.swing.JFrame {
 	  } catch (RemoteException e) {e.printStackTrace();}
         campoTextoChat.requestFocus();
     }                                           
+    
+    /*
+    private void campoEnviarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoEnviarKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && !campoEnviar.getText().equals("")) {
+            usuario.setMsgEnviar(campoEnviar.getText());
+            chat += campoEnviar.getText() + "\n";
+            textoChat.setText(chat);
+            campoEnviar.setText("");
+            campoEnviar.requestFocus();
+        }
+    }//GEN-LAST:event_campoEnviarKeyPressed
+    */
     
     private void butaoStartServidorActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         
