@@ -7,12 +7,12 @@ import javax.swing.JFrame;
 
 import RMI.Cliente;
 
-public class JanelaJogo extends JFrame {
+public class JanelaPainel extends JFrame {
 	
 	Cliente player = null;
 	PainelTabuleiro tabuleiro = null;
 	
-	public JanelaJogo() {	
+	public JanelaPainel() {	
 		inicializaJanelaPrincipal();
 		inicializaPlayer();
 		inicializaPainelJogo();		

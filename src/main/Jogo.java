@@ -1,10 +1,10 @@
 package main;
 
-import Interface.JanelaJogo;
+import Interface.JanelaPainel;
 
 public class Jogo {
 	
 	public static void main(String[] args) {
-		new JanelaJogo();
+		new JanelaPainel();
 	}
 }
