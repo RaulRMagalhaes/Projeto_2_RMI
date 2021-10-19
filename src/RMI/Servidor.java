@@ -15,7 +15,7 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 
 	public Servidor() throws RemoteException{
 		super();
-      	msgServidor += "Servidor criado!\n";
+      	this.msgServidor += "Servidor criado!\n";
       	System.out.println("Servidor criado!");
       	registraServidor();
       	
@@ -32,10 +32,10 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
       			try {
 					new Partida(this, listaClientes.get(i), listaClientes.get(i+1));
 					minimoParaNovaPartida += 2;
-					msgServidor += "\n   Nova partida iniciada: " + listaClientes.get(i).getNomeCliente() + " X " + listaClientes.get(i+1).getNomeCliente() + "\n";
+					this.msgServidor += "\n   Nova partida iniciada: " + listaClientes.get(i).getNomeCliente() + " X " + listaClientes.get(i+1).getNomeCliente() + "\n";
 					System.out.println("\n   Nova partida iniciada: " + listaClientes.get(i).getNomeCliente() + " X " + listaClientes.get(i+1).getNomeCliente() + "\n");
 				} catch (Exception e) {
-					msgServidor += "Erro ao criar partidas no servidor\n";
+					this.msgServidor += "Erro ao criar partidas no servidor\n";
 					System.out.println("Erro ao criar partidas no servidor");
 					e.printStackTrace();
 					break;
@@ -55,7 +55,7 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 		} else {
 			player.setTipoDePlayer("p2");
 		}
-		msgServidor += player.getNomeCliente() + " se conectou\n";
+		this.msgServidor += player.getNomeCliente() + " se conectou\n";
 		System.out.println(player.getNomeCliente() + " se conectou"); 
 	}
 	
@@ -68,16 +68,20 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 	}
 	
 	public String getMsgServidor() throws RemoteException{
-		return msgServidor;
+		return this.msgServidor;
 	}
 
+        public ArrayList<String> getListaUrlClientes() throws RemoteException{
+            return listaUrlClientes;
+        }
+      
 	public void registraServidor() {
 		try{
 			LocateRegistry.createRegistry(1099);
 	
 			Naming.rebind("//localhost/Servidor", this);
 			
-			msgServidor += "Servidor Registrado!\n";
+			this.msgServidor += "Servidor Registrado!\n";
 			System.out.println("Servidor Registrado!");
 			
 			setConectado(true);

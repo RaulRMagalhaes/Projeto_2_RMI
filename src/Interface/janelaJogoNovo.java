@@ -5,40 +5,36 @@
  */
 package Interface;
 
-import java.awt.CardLayout;
-import java.rmi.RemoteException;
-
-import javax.swing.JOptionPane;
-
-import Interface.Janela.recebeMsgThread;
 import RMI.Cliente;
 import RMI.Servidor;
-
+import java.awt.CardLayout;
+import static java.lang.Thread.sleep;
+import java.rmi.RemoteException;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
-
-
 
 /**
  *
  * @author raulmagalhaes
  */
-public class janelaJogo extends javax.swing.JFrame {
+public class janelaJogoNovo extends javax.swing.JFrame {
     
     /**
-	 * 
-	 */
+    * 
+    */
 	
-	private static final long serialVersionUID = 1L;
-	Servidor servidor = null;
+    private static final long serialVersionUID = 1L;
+    Servidor servidor = null;
     Cliente usuario = null;
+    PainelTabuleiro tabuleiro = null;
     int num = 0;
     String chat = "";
     String msgLogServidor = "";
     
     CardLayout c1 = null;
     
-    public janelaJogo() {
+    public janelaJogoNovo() {
         initComponents();
     }
 
@@ -59,6 +55,9 @@ public class janelaJogo extends javax.swing.JFrame {
         botaoJogarLogin = new javax.swing.JButton();
         painelPrincipal = new javax.swing.JPanel();
         painelJogo = new javax.swing.JPanel();
+        labelPontosP2 = new javax.swing.JLabel();
+        labelPontosP1 = new javax.swing.JLabel();
+        painelTabuleiro = new javax.swing.JPanel();
         painelChat = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         areaTextoChat = new javax.swing.JTextArea();
@@ -77,7 +76,6 @@ public class janelaJogo extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login - Jogo");
-        setPreferredSize(new java.awt.Dimension(800, 500));
         setResizable(false);
 
         painelRaiz.setLayout(new java.awt.CardLayout());
@@ -156,23 +154,58 @@ public class janelaJogo extends javax.swing.JFrame {
 
         painelJogo.setPreferredSize(new java.awt.Dimension(478, 0));
 
+        labelPontosP2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        labelPontosP2.setText("Usuário P2:");
+
+        labelPontosP1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        labelPontosP1.setText("Usuário P1:");
+
+        painelTabuleiro.setPreferredSize(new java.awt.Dimension(402, 402));
+
+        javax.swing.GroupLayout painelTabuleiroLayout = new javax.swing.GroupLayout(painelTabuleiro);
+        painelTabuleiro.setLayout(painelTabuleiroLayout);
+        painelTabuleiroLayout.setHorizontalGroup(
+            painelTabuleiroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 402, Short.MAX_VALUE)
+        );
+        painelTabuleiroLayout.setVerticalGroup(
+            painelTabuleiroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 402, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout painelJogoLayout = new javax.swing.GroupLayout(painelJogo);
         painelJogo.setLayout(painelJogoLayout);
         painelJogoLayout.setHorizontalGroup(
             painelJogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelJogoLayout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGroup(painelJogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painelJogoLayout.createSequentialGroup()
+                        .addGap(212, 212, 212)
+                        .addGroup(painelJogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelPontosP2)
+                            .addComponent(labelPontosP1)))
+                    .addGroup(painelJogoLayout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(painelTabuleiro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         painelJogoLayout.setVerticalGroup(
             painelJogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelJogoLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(painelJogoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelPontosP2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(painelTabuleiro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
+                .addComponent(labelPontosP1)
                 .addContainerGap())
         );
 
         areaTextoChat.setColumns(20);
         areaTextoChat.setRows(5);
+        areaTextoChat.setEditable (false);
+        areaTextoChat.setLineWrap(true);            //quebrea de lina
+        areaTextoChat.setWrapStyleWord(true);       //quebra de linha por palavra
         jScrollPane1.setViewportView(areaTextoChat);
 
         campoTextoChat.setToolTipText("Digite para enviar uma mensagem ao seu oponente");
@@ -228,7 +261,7 @@ public class janelaJogo extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(painelChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(painelJogo, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
+                    .addComponent(painelJogo, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -237,10 +270,10 @@ public class janelaJogo extends javax.swing.JFrame {
         painelServidor.setPreferredSize(new java.awt.Dimension(800, 500));
 
         labelListaUsuarios.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        labelListaUsuarios.setText("Lista de Usuarios");
+        labelListaUsuarios.setText("Lista de Usuários");
 
         listaUsuarios.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = {"Nenum usuario Conectado"};
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -275,6 +308,9 @@ public class janelaJogo extends javax.swing.JFrame {
 
         areaTextoLogServidor.setColumns(20);
         areaTextoLogServidor.setRows(5);
+        areaTextoLogServidor.setEditable (false);          //não é possível editar a area de texto
+        areaTextoLogServidor.setLineWrap(true);            //quebrea de lina
+        areaTextoLogServidor.setWrapStyleWord(true);       //quebra de linha por palabra
         painelScrollLogServidor.setViewportView(areaTextoLogServidor);
 
         labelLogServidor.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -299,7 +335,7 @@ public class janelaJogo extends javax.swing.JFrame {
             .addGroup(painelLogServidorLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelLogServidor)
-                .addContainerGap(409, Short.MAX_VALUE))
+                .addContainerGap(413, Short.MAX_VALUE))
             .addGroup(painelLogServidorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelLogServidorLayout.createSequentialGroup()
                     .addContainerGap(67, Short.MAX_VALUE)
@@ -357,35 +393,48 @@ public class janelaJogo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoJogarLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoJogarLoginActionPerformed
-  
-    	c1 = (CardLayout) painelRaiz.getLayout();
-    	new recebeMsgThread().start();
-    	
+   	c1 = (CardLayout) painelRaiz.getLayout();
+    	new RecebeMsgThread().start();
+
         if(campoNomeUsuario.getText().equals("serv")){
             c1.show(painelRaiz, "telaServidor");
 
-            msgLogServidor = "O servidor ainda est� OFFLINE. Aguardando Start do servidor...\n";
+            msgLogServidor = "O servidor ainda est� OFFLINE. Aguardando Start do servidor...\n";
             areaTextoLogServidor.setText(msgLogServidor);
             
         } else if(!campoNomeUsuario.getText().equals("")) {            
             String nomeUsuario = campoNomeUsuario.getText();
             c1.show(painelRaiz, "telaPrincipal");
-
-            try {
-    			usuario = new Cliente(campoNomeUsuario.getText());
-				if(usuario.isConectado()) { 
-					setTitle("Surakarta - " + nomeUsuario + " - Online");
-					if(usuario.getTipoDePlayer().equals("p1")) {
-						JOptionPane.showMessageDialog(painelPrincipal, "Bem vindo " + campoNomeUsuario.getText() + ", \n\nAguardando um oponente para jogar com voce!", "Voce esta conectado", INFORMATION_MESSAGE);
-					}else if (usuario.getTipoDePlayer().equals("p2")) {
-						JOptionPane.showMessageDialog(painelPrincipal, "Bem vindo " + campoNomeUsuario.getText() + ", \n\nSeu oponente ja esta aguardando!", "Voce esta conectado", INFORMATION_MESSAGE);
+                try {
+                    usuario = new Cliente(nomeUsuario);
+                    tabuleiro = new PainelTabuleiro(usuario);
+                    
+                    painelTabuleiro.add(tabuleiro);
+                    
+                    if(usuario.getTipoDePlayer().equals("p1")){
+                        labelPontosP1.setText("Player 1: " + usuario.getNomeCliente() + "          Pontos: " + usuario.getPontos() );
+                        labelPontosP2.setText("Player 2: - / Pontos: -");
+                    }else if (usuario.getTipoDePlayer().equals("p2")) {
+                         labelPontosP1.setText("Player 1: - / Pontos: -");
+                    	 labelPontosP2.setText("Player 2: " + usuario.getNomeCliente() + "          Pontos: " + usuario.getPontos() );
 					}
-				}else {
-				    setTitle("Surakarta - " + nomeUsuario + " - Servidor OFFLINE");
-				    JOptionPane.showMessageDialog(painelPrincipal, "O servidor OFFLINE \n\n E necessario fechar a pagina e voltar quando o servidor estiver startado!", "Conexao com servidor",ERROR_MESSAGE );
-				}
+                    
+                        if(usuario.isConectado()) { 
+                            setTitle("Surakarta - " + nomeUsuario + " - Online");
+                            if(usuario.getTipoDePlayer().equals("p1")) {
+                                    JOptionPane.showMessageDialog(painelPrincipal, "Bem vindo " + campoNomeUsuario.getText() + ", \n\nAguardando um oponente para jogar com voce!", "Voce esta conectado", INFORMATION_MESSAGE);
+                            }else if (usuario.getTipoDePlayer().equals("p2")) {
+                                    JOptionPane.showMessageDialog(painelPrincipal, "Bem vindo " + campoNomeUsuario.getText() + ", \n\nSeu oponente ja esta aguardando!", "Voce esta conectado", INFORMATION_MESSAGE);
+                            }
+                        }else {
+                            setTitle("Surakarta - " + nomeUsuario + " - Servidor OFFLINE");
+                            JOptionPane.showMessageDialog(painelPrincipal, "O servidor OFFLINE \n\n E necessario fechar a pagina e voltar quando o servidor estiver startado!", "Conexao com servidor",ERROR_MESSAGE );
+                        }
     		} catch (RemoteException e) { e.printStackTrace();}
+            
         }
+		
+        
         campoTextoChat.requestFocus();
     }//GEN-LAST:event_botaoJogarLoginActionPerformed
 
@@ -394,39 +443,38 @@ public class janelaJogo extends javax.swing.JFrame {
     }//GEN-LAST:event_campoNomeUsuarioActionPerformed
 
     private void botaoEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEnviarActionPerformed
-    	try {
+	  try {
 	    	if (!campoTextoChat.getText().equals("") && usuario.getOponente() != null) {
 	            usuario.enviaMsg(campoTextoChat.getText());
 	            chat += campoTextoChat.getText() + "\n";
 	            areaTextoChat.setText(chat);
 	            campoTextoChat.setText("");
 	        }			
-	    } catch (RemoteException e) {e.printStackTrace();}
+	  } catch (RemoteException e) {e.printStackTrace();}
         campoTextoChat.requestFocus();
     }//GEN-LAST:event_botaoEnviarActionPerformed
 
     private void butaoStartServidorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butaoStartServidorActionPerformed
         
     	if(servidor == null){
-    		try {
-    	   		servidor = new Servidor();
+            try {
+                servidor = new Servidor();
                 msgLogServidor = "";
-                areaTextoLogServidor.setText(msgLogServidor);
-                
-                msgLogServidor = servidor.getMsgServidor();
-                areaTextoLogServidor.setText(msgLogServidor);
-                
-                butaoStartServidor.setText("Finish");
-                setTitle("Surakarta - Painel de Administrador - Servidor ONLINE");
-                
-    		} catch (Exception e) {
-    			try {
-					areaTextoLogServidor.setText(servidor.getMsgServidor());
-				} catch (RemoteException e1) {e1.printStackTrace(); }
-			}
+                areaTextoLogServidor.setText(servidor.getMsgServidor());
+
+                if(servidor.isConectado()){
+                    butaoStartServidor.setText("Finish");
+                    setTitle("Surakarta - Painel de Administrador - Servidor ONLINE");
+                }
+            } catch (Exception e) {
+                try {
+                    areaTextoLogServidor.setText(servidor.getMsgServidor());
+                } catch (RemoteException e1) {e1.printStackTrace(); }
+            }
     	} else if(butaoStartServidor.getText().equals("Finish")){
-            servidor.setConectado(false);;
+            servidor.setConectado(false);
             servidor = null;
+            butaoStartServidor.setText("Start");
         }
         
         
@@ -449,20 +497,23 @@ public class janelaJogo extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(janelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(janelaJogoNovo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(janelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(janelaJogoNovo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(janelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(janelaJogoNovo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(janelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(janelaJogoNovo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new janelaJogo().setVisible(true);
+                new janelaJogoNovo().setVisible(true);
             }
         });
     }
@@ -479,6 +530,8 @@ public class janelaJogo extends javax.swing.JFrame {
     private javax.swing.JLabel labelListaUsuarios;
     private javax.swing.JLabel labelLogServidor;
     private javax.swing.JLabel labelNomeUsuarioLogin;
+    private javax.swing.JLabel labelPontosP1;
+    private javax.swing.JLabel labelPontosP2;
     private javax.swing.JList<String> listaUsuarios;
     private javax.swing.JPanel painelChat;
     private javax.swing.JPanel painelFormularioLogin;
@@ -490,36 +543,66 @@ public class janelaJogo extends javax.swing.JFrame {
     private javax.swing.JPanel painelRaiz;
     private javax.swing.JScrollPane painelScrollLogServidor;
     private javax.swing.JPanel painelServidor;
+    private javax.swing.JPanel painelTabuleiro;
     private javax.swing.JScrollPane scrollLlistaUsuarios;
     // End of variables declaration//GEN-END:variables
 
-    public class recebeMsgThread extends Thread {
-		public void run() {
-			while(true) {
-				try {
-					sleep(500);
-					if(usuario != null) {
-						if(usuario.getOponente() != null ) {
-							while(true) {
-								sleep(300);
-								if(!usuario.getMsgRecebida().equals("")) {
-									chat += usuario.getMsgRecebida() + "\n";
-						            areaTextoChat.setText(chat);
-						            usuario.recebeMsg("");
-								}
-							}
-						}
-					}else if (servidor != null) {
-						while (true) {
-							sleep(500);
-			                msgLogServidor = servidor.getMsgServidor();
-			                areaTextoLogServidor.setText(msgLogServidor);
-						}
-					}
-					
-				} catch (RemoteException | InterruptedException e) {e.printStackTrace();}
-			}
-		}
-	}
-
+    public class RecebeMsgThread extends Thread {
+        public void run() {
+        	String nomeP1 = "", nomeP2 = "";
+        	int pontosP1 = 0, pontosP2 = 0;
+        	
+            while(true) {
+                try {
+                    sleep(500);
+                    if(usuario != null) {
+                        if(usuario.getOponente() != null ) {
+                            while(true) {
+                                sleep(300);
+                                if(!usuario.getMsgRecebida().equals("")) {
+                                    chat += usuario.getMsgRecebida() + "\n";
+                                    areaTextoChat.setText(chat);
+                                    usuario.recebeMsg("");
+                                }
+                                
+                                //atualiza pontuacao
+                                if(usuario.getTipoDePlayer().equals("p1")) {
+                                	 nomeP1 = usuario.getNomeCliente();
+                                     pontosP1 = usuario.getPontos();
+                                     
+                                     nomeP2 = usuario.getOponente().getNomeCliente();
+                                     pontosP2 = usuario.getOponente().getPontos();
+                                     
+                                }else  if(usuario.getTipoDePlayer().equals("p2")){
+	                               	 nomeP2 = usuario.getNomeCliente();
+	                                 pontosP2 = usuario.getPontos();
+	                                 
+	                                 nomeP1 = usuario.getOponente().getNomeCliente();
+	                                 pontosP1 = usuario.getOponente().getPontos();
+                                }
+                                
+                                labelPontosP1.setText("Player 1: " + nomeP1 + "          Pontos: " + pontosP1);
+                                labelPontosP2.setText("Player 2: " + nomeP2 + "          Pontos: " + pontosP2);
+                                
+                                if(pontosP1 == 12) {
+                                	labelPontosP1.setText(nomeP1 + ": VOCE VENCEU!!!");
+                                    labelPontosP2.setText(nomeP2 + ": VOCE PERDEU.");
+                                }else  if(pontosP2 == 12){
+                                	labelPontosP1.setText(nomeP1 + ": VOCE PERDEU.");
+                                	labelPontosP2.setText(nomeP2 + ": VOCE VENCEU!!!");
+                                }
+                            }
+                        }
+                    }else if (servidor != null) {
+                        while (true) {
+                            sleep(500);
+                            msgLogServidor = servidor.getMsgServidor();
+                            areaTextoLogServidor.setText(msgLogServidor);
+                        }
+                    }
+                } catch (RemoteException | InterruptedException e) {e.printStackTrace();}
+            }
+        }
+    }
+    
 }

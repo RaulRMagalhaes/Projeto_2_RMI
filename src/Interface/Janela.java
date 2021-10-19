@@ -445,10 +445,10 @@ public class Janela extends javax.swing.JFrame {
                     setTitle("Surakarta - Painel de Administrador - Servidor ONLINE");
                 }
     		} catch (Exception e) {
-                try {
-					areaTextoLogServidor.setText(servidor.getMsgServidor());
-				} catch (RemoteException e1) {e1.printStackTrace(); }
-			}
+                    try {
+                        areaTextoLogServidor.setText(servidor.getMsgServidor());
+                    } catch (RemoteException e1) {e1.printStackTrace(); }
+                }
     	} /*else if(butaoStartServidor.getText().equals("Finish")){
             //servidor.fechar();
             servidor = null;
