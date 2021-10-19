@@ -44,7 +44,7 @@ public class Pino {
 	
 
 		
-		new Mover().start();;
+		new Mover().start();
 	}
 	
 	

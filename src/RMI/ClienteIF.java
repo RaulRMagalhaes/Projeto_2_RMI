@@ -32,6 +32,8 @@ public interface ClienteIF extends Remote {
 	
 	void setTipoDePlayer(String tipoDePlayer) throws RemoteException;
 	
+	void enviaMsg(String mensagem) throws RemoteException;
+	
 	String getMsgEnviada() throws RemoteException;
 	
 	void recebeMsg(String mensagem) throws RemoteException;

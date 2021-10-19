@@ -23,10 +23,11 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 	String msgStatusTurnoPartida = "";
 	String [][] matrizPinos = null;
 	Pino[][] matrizPinosTabuleiro = null;
+	boolean conectado = false;
 	
-	public Cliente() throws RemoteException {
+	public Cliente(String nomeCliente) throws RemoteException {
 		
-		nomeCliente = "Cliente_" + new Random().nextInt(1000);
+		this.nomeCliente = nomeCliente;   //"Cliente_" + new Random().nextInt(1000);
 		
 		conectaCliente();
 		
@@ -107,14 +108,15 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 		this.tipoDePlayer = tipoDePlayer;
 	}
 
-	private void enviaMsg(String mensagem) {
-		this.msgEnviada = mensagem;
-		
-		try {
-			oponente.recebeMsg(this.msgEnviada);
-		} catch (RemoteException e) {
-			System.out.println("Chat - Erro de comunicacao. Oponente desconectado\n");
-			e.printStackTrace();
+	public void enviaMsg(String mensagem) throws RemoteException{
+		if(!mensagem.equals("")){
+			try {
+				this.msgEnviada = mensagem;
+				oponente.recebeMsg(nomeCliente + ": " + this.msgEnviada);
+			} catch (RemoteException e) {
+				System.out.println("Chat - Erro de comunicacao. Oponente desconectado\n");
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -122,11 +124,9 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 		return this.msgEnviada;
 	}
 	
-	public void recebeMsg(String mensagem) throws RemoteException{
-		if(!mensagem.equals("") && mensagem != null) {
-			this.msgRecebida = mensagem;
-			System.out.println(this.msgRecebida);
-		}
+	public void recebeMsg(String mensagem) throws RemoteException{		
+		this.msgRecebida = mensagem;
+		System.out.println(this.msgRecebida);
 	}
 	
 	public String getMsgRecebida() throws RemoteException{
@@ -166,13 +166,21 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 		this.matrizPinosTabuleiro[i][j] = null;
 	}
 	
+	public boolean isConectado() {
+		return conectado;
+	}
+
+	public void setConectado(boolean conectado) {
+		this.conectado = conectado;
+	}
+
 	@Override
 	public void run() {
 		while(true) {
       		try {Thread.sleep(50);} catch (InterruptedException e1) {}
 			try {
 				BufferedReader r = new BufferedReader(new InputStreamReader(System.in)); 
-				enviaMsg(nomeCliente + ": " + r.readLine());
+				enviaMsg(r.readLine());
 			}catch (Exception e) {System.err.println("Cliente - Erro ao enviar uma mensagem"); }
 		}
 	}
@@ -186,6 +194,8 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 			servidor.registraCliente(urlCliente);
 			
 			System.out.println("Cliente " + nomeCliente + " Registrado!");
+			
+			setConectado(true);
 			
 			new Thread(this).start();
 

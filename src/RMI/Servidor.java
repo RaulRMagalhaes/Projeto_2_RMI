@@ -8,11 +8,14 @@ import java.util.ArrayList;
 
 public class Servidor extends UnicastRemoteObject implements ServidorIF {
 	
+	boolean conectado = false;
+	String msgServidor = "";
 	private ArrayList<ClienteIF> listaClientes = new ArrayList<ClienteIF>();
 	private ArrayList<String> listaUrlClientes = new ArrayList<String>();
 
 	public Servidor() throws RemoteException{
 		super();
+      	msgServidor += "Servidor criado!\n";
       	System.out.println("Servidor criado!");
       	registraServidor();
       	
@@ -29,8 +32,10 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
       			try {
 					new Partida(this, listaClientes.get(i), listaClientes.get(i+1));
 					minimoParaNovaPartida += 2;
+					msgServidor += "\n   Nova partida iniciada: " + listaClientes.get(i).getNomeCliente() + " X " + listaClientes.get(i+1).getNomeCliente() + "\n";
 					System.out.println("\n   Nova partida iniciada: " + listaClientes.get(i).getNomeCliente() + " X " + listaClientes.get(i+1).getNomeCliente() + "\n");
 				} catch (Exception e) {
+					msgServidor += "Erro ao criar partidas no servidor\n";
 					System.out.println("Erro ao criar partidas no servidor");
 					e.printStackTrace();
 					break;
@@ -50,27 +55,42 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 		} else {
 			player.setTipoDePlayer("p2");
 		}
-		
+		msgServidor += player.getNomeCliente() + " se conectou\n";
 		System.out.println(player.getNomeCliente() + " se conectou"); 
 	}
 	
+	public boolean isConectado() {
+		return conectado;
+	}
+
+	public void setConectado(boolean conectado) {
+		this.conectado = conectado;
+	}
+	
+	public String getMsgServidor() throws RemoteException{
+		return msgServidor;
+	}
+
 	public void registraServidor() {
 		try{
 			LocateRegistry.createRegistry(1099);
 	
 			Naming.rebind("//localhost/Servidor", this);
-
+			
+			msgServidor += "Servidor Registrado!\n";
 			System.out.println("Servidor Registrado!");
+			
+			setConectado(true);
 
 		} catch (Exception e){System.err.println("Erro ao registrar servidor");}
 	                        
 	}
 	
-	
+	/*
 	public static void main(String args[]) {
 		try {
 			new Servidor ();
 		} catch (RemoteException e) {}
 	}
-
+	*/
 }
