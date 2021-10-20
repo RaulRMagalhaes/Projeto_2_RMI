@@ -12,7 +12,7 @@ import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 /**
  * @author raul rodrigues magalhaes
  */
-public class janelaJogoNovo extends javax.swing.JFrame {
+public class JanelaJogo extends javax.swing.JFrame {
     	
     private static final long serialVersionUID = 1L;
     Servidor servidor = null;
@@ -24,7 +24,7 @@ public class janelaJogoNovo extends javax.swing.JFrame {
     boolean minhaVez = false;
     CardLayout c1 = null;
     
-    public janelaJogoNovo() {
+    public JanelaJogo() {
         initComponents();
     }
 
@@ -480,19 +480,19 @@ public class janelaJogoNovo extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(janelaJogoNovo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JanelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(janelaJogoNovo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JanelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(janelaJogoNovo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JanelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(janelaJogoNovo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JanelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new janelaJogoNovo().setVisible(true);
+                new JanelaJogo().setVisible(true);
             }
         });
     }
