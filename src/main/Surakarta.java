@@ -1,10 +1,10 @@
 package main;
 
-import Interface.janelaJogo;
+import Interface.janelaJogoNovo;
 
 public class Surakarta {
 	
 	public static void main(String[] args) {
-		new janelaJogo();
+		new janelaJogoNovo();
 	}
 }
