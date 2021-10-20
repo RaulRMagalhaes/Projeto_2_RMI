@@ -19,7 +19,7 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
       	System.out.println("Servidor criado!");
       	registraServidor();
       	
-      	criaPartidas();
+      	new threadCriaPartidas().start();
 	}
 	
 	private void criaPartidas() {
@@ -32,7 +32,7 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
       			try {
 					new Partida(this, listaClientes.get(i), listaClientes.get(i+1));
 					minimoParaNovaPartida += 2;
-					this.msgServidor += "\n   Nova partida iniciada: " + listaClientes.get(i).getNomeCliente() + " X " + listaClientes.get(i+1).getNomeCliente() + "\n";
+					this.msgServidor += "\n   Nova partida iniciada: " + listaClientes.get(i).getNomeCliente() + " X " + listaClientes.get(i+1).getNomeCliente() + "\n\n";
 					System.out.println("\n   Nova partida iniciada: " + listaClientes.get(i).getNomeCliente() + " X " + listaClientes.get(i+1).getNomeCliente() + "\n");
 				} catch (Exception e) {
 					this.msgServidor += "Erro ao criar partidas no servidor\n";
@@ -55,7 +55,7 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 		} else {
 			player.setTipoDePlayer("p2");
 		}
-		this.msgServidor += player.getNomeCliente() + " se conectou\n";
+		this.msgServidor += "\n" + player.getNomeCliente() + " se conectou\n";
 		System.out.println(player.getNomeCliente() + " se conectou"); 
 	}
 	
@@ -88,5 +88,11 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 
 		} catch (Exception e){System.err.println("Erro ao registrar servidor");}
 	                        
+	}
+	
+	public class threadCriaPartidas extends Thread {
+		public void run() {
+			criaPartidas();
+		}
 	}
 }

@@ -379,12 +379,12 @@ public class JanelaJogo extends javax.swing.JFrame {
 
     private void botaoJogarLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoJogarLoginActionPerformed
    	c1 = (CardLayout) painelRaiz.getLayout();
-    	new RecebeMsgThread().start();
+    	new threadAtualizaInfo().start();
 
         if(campoNomeUsuario.getText().equals("serv")){
             c1.show(painelRaiz, "telaServidor");
 
-            msgLogServidor = "O servidor ainda esta OFFLINE. Aguardando Start do servidor...\n";
+            msgLogServidor = "O servidor ainda esta OFFLINE. Clique em \"Start\" (A lista de Usuarios ainda não foi implementada). Logo em seguida execute o programa novamente e entre com o nome do usuario para instanciar um cliente. Apartida iniciara quando 2 clientes tiverem sido criados e o primeiro a entrar comeca o jogo...\n";
             areaTextoLogServidor.setText(msgLogServidor);
             
         } else if(!campoNomeUsuario.getText().equals("")) {            
@@ -448,7 +448,7 @@ public class JanelaJogo extends javax.swing.JFrame {
                 areaTextoLogServidor.setText(servidor.getMsgServidor());
 
                 if(servidor.isConectado()){
-                    butaoStartServidor.setText("Finish");
+                    butaoStartServidor.setText("Startado");
                     setTitle("Surakarta - Painel de Administrador - Servidor ONLINE");
                 }
             } catch (Exception e) {
@@ -456,46 +456,10 @@ public class JanelaJogo extends javax.swing.JFrame {
                     areaTextoLogServidor.setText(servidor.getMsgServidor());
                 } catch (RemoteException e1) {e1.printStackTrace(); }
             }
-    	} else if(butaoStartServidor.getText().equals("Finish")){
-            servidor.setConectado(false);
-            servidor = null;
-            butaoStartServidor.setText("Start");
-        }
+    	} 
         
         
     }//GEN-LAST:event_butaoStartServidorActionPerformed
-
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JanelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JanelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JanelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JanelaJogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JanelaJogo().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaTextoChat;
@@ -526,7 +490,7 @@ public class JanelaJogo extends javax.swing.JFrame {
     private javax.swing.JScrollPane scrollLlistaUsuarios;
     // End of variables declaration//GEN-END:variables
 
-    public class RecebeMsgThread extends Thread {
+    public class threadAtualizaInfo extends Thread {
         public void run() {
         	String nomeP1 = "", nomeP2 = "";
         	int pontosP1 = 0, pontosP2 = 0;
@@ -582,9 +546,9 @@ public class JanelaJogo extends javax.swing.JFrame {
                         
                     }
                     //loop para servidor
-                    else if (servidor != null) {
+                    if (servidor != null) {
                         while (true) {
-                            sleep(500);
+                            sleep(300);
                             msgLogServidor = servidor.getMsgServidor();
                             areaTextoLogServidor.setText(msgLogServidor);
                         }
