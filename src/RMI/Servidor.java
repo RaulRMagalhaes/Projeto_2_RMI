@@ -8,11 +8,14 @@ import java.util.ArrayList;
 
 public class Servidor extends UnicastRemoteObject implements ServidorIF {
 	
+	boolean conectado = false;
+	String msgServidor = "";
 	private ArrayList<ClienteIF> listaClientes = new ArrayList<ClienteIF>();
 	private ArrayList<String> listaUrlClientes = new ArrayList<String>();
 
 	public Servidor() throws RemoteException{
 		super();
+      	this.msgServidor += "Servidor criado!\n";
       	System.out.println("Servidor criado!");
       	registraServidor();
       	
@@ -24,44 +27,21 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
       	while(true){
       		try {Thread.sleep(100);} catch (InterruptedException e1) {}
       		
-      		//System.out.println("num clientes: " + listaClientes.size());
-
       		if(listaClientes.size() == minimoParaNovaPartida) {
       			int i = minimoParaNovaPartida - 2;
       			try {
 					new Partida(this, listaClientes.get(i), listaClientes.get(i+1));
 					minimoParaNovaPartida += 2;
+					this.msgServidor += "\n   Nova partida iniciada: " + listaClientes.get(i).getNomeCliente() + " X " + listaClientes.get(i+1).getNomeCliente() + "\n";
 					System.out.println("\n   Nova partida iniciada: " + listaClientes.get(i).getNomeCliente() + " X " + listaClientes.get(i+1).getNomeCliente() + "\n");
 				} catch (Exception e) {
-					System.err.println("Erro ao criar partidas no servidor");
+					this.msgServidor += "Erro ao criar partidas no servidor\n";
+					System.out.println("Erro ao criar partidas no servidor");
 					e.printStackTrace();
+					break;
 				}
       		}
       	}
-	}
-	
-	@Deprecated
-	public synchronized void transmiteMsg(String urlClienteOrigem, String mensagem) throws RemoteException {
-		
-		System.out.println("servidor: " + urlClienteOrigem + "/ " + mensagem);
-		
-		int i = 0;
-		if(listaClientes.size() >= 2) {			
-			ClienteIF p1 = listaClientes.get(i);
-			ClienteIF p2 = listaClientes.get(i+1);
-			
-			if(urlClienteOrigem.equals(p1.getUrlCliente())) {
-				System.out.println("quem enviou foi o p1");
-				p2.recebeMsg(mensagem);
-			} else if(urlClienteOrigem.equals(p2.getUrlCliente())) {
-				System.out.println("quem enviou foi o p2");
-				p1.recebeMsg(mensagem);
-			} else {
-				System.out.println("URL_CLIENTE não serve pra comparar com o objeto remoto");
-			}
-		}
-		
-		
 	}
 	
 	public synchronized void registraCliente(String urlCliente) throws RemoteException, MalformedURLException, NotBoundException {
@@ -75,27 +55,38 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 		} else {
 			player.setTipoDePlayer("p2");
 		}
-		
+		this.msgServidor += player.getNomeCliente() + " se conectou\n";
 		System.out.println(player.getNomeCliente() + " se conectou"); 
 	}
 	
+	public boolean isConectado() {
+		return conectado;
+	}
+
+	public void setConectado(boolean conectado) {
+		this.conectado = conectado;
+	}
+	
+	public String getMsgServidor() throws RemoteException{
+		return this.msgServidor;
+	}
+
+        public ArrayList<String> getListaUrlClientes() throws RemoteException{
+            return listaUrlClientes;
+        }
+      
 	public void registraServidor() {
 		try{
 			LocateRegistry.createRegistry(1099);
 	
 			Naming.rebind("//localhost/Servidor", this);
-
+			
+			this.msgServidor += "Servidor Registrado!\n";
 			System.out.println("Servidor Registrado!");
+			
+			setConectado(true);
 
 		} catch (Exception e){System.err.println("Erro ao registrar servidor");}
 	                        
 	}
-	
-	
-	public static void main(String args[]) {
-		try {
-			new Servidor ();
-		} catch (RemoteException e) {}
-	}
-
 }

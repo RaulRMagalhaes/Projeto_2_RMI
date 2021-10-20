@@ -44,7 +44,7 @@ public class Pino {
 	
 
 		
-		new Mover().start();;
+		new Mover().start();
 	}
 	
 	
@@ -127,7 +127,6 @@ public class Pino {
 				
 				if(mouseClicou && mouseNatela) {
 					mousePos =  janela.getMousePosition();
-					//System.out.println("Posicao mouse: " + mousePos.x + "," + mousePos.y); 
 					dx = mousePos.x ;					
 					dy = mousePos.y ;
 				}	
