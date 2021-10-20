@@ -96,5 +96,5 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 			new Servidor ();
 		} catch (RemoteException e) {}
 	}
-	*/
+	//*/
 }

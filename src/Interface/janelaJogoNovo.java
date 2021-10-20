@@ -270,7 +270,7 @@ public class janelaJogoNovo extends javax.swing.JFrame {
         painelServidor.setPreferredSize(new java.awt.Dimension(800, 500));
 
         labelListaUsuarios.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        labelListaUsuarios.setText("Lista de Usuários");
+        labelListaUsuarios.setText("Lista de Usuarios");
 
         listaUsuarios.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = {"Nenum usuario Conectado"};
@@ -399,7 +399,7 @@ public class janelaJogoNovo extends javax.swing.JFrame {
         if(campoNomeUsuario.getText().equals("serv")){
             c1.show(painelRaiz, "telaServidor");
 
-            msgLogServidor = "O servidor ainda est� OFFLINE. Aguardando Start do servidor...\n";
+            msgLogServidor = "O servidor ainda esta OFFLINE. Aguardando Start do servidor...\n";
             areaTextoLogServidor.setText(msgLogServidor);
             
         } else if(!campoNomeUsuario.getText().equals("")) {            
