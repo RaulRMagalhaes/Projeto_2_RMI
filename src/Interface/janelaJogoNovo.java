@@ -31,7 +31,7 @@ public class janelaJogoNovo extends javax.swing.JFrame {
     int num = 0;
     String chat = "";
     String msgLogServidor = "";
-    
+    boolean minhaVez = false;
     CardLayout c1 = null;
     
     public janelaJogoNovo() {
@@ -155,10 +155,10 @@ public class janelaJogoNovo extends javax.swing.JFrame {
         painelJogo.setPreferredSize(new java.awt.Dimension(478, 0));
 
         labelPontosP2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        labelPontosP2.setText("UsuÃ¡rio P2:");
+        labelPontosP2.setText("Usuario P2:");
 
         labelPontosP1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        labelPontosP1.setText("UsuÃ¡rio P1:");
+        labelPontosP1.setText("Usuario P1:");
 
         painelTabuleiro.setPreferredSize(new java.awt.Dimension(402, 402));
 
@@ -413,18 +413,18 @@ public class janelaJogoNovo extends javax.swing.JFrame {
                     
                     if(usuario.getTipoDePlayer().equals("p1")){
                         labelPontosP1.setText("Player 1: " + usuario.getNomeCliente() + "          Pontos: " + usuario.getPontos() );
-                        labelPontosP2.setText("Player 2: - / Pontos: -");
+                        labelPontosP2.setText("Player 2: -          Pontos: -");
                     }else if (usuario.getTipoDePlayer().equals("p2")) {
-                         labelPontosP1.setText("Player 1: - / Pontos: -");
+                         labelPontosP1.setText("Player 1: -          Pontos: -");
                     	 labelPontosP2.setText("Player 2: " + usuario.getNomeCliente() + "          Pontos: " + usuario.getPontos() );
 					}
                     
                         if(usuario.isConectado()) { 
                             setTitle("Surakarta - " + nomeUsuario + " - Online");
                             if(usuario.getTipoDePlayer().equals("p1")) {
-                                    JOptionPane.showMessageDialog(painelPrincipal, "Bem vindo " + campoNomeUsuario.getText() + ", \n\nAguardando um oponente para jogar com voce!", "Voce esta conectado", INFORMATION_MESSAGE);
+                                    JOptionPane.showMessageDialog(painelPrincipal, "Bem vindo " + campoNomeUsuario.getText() + ", \n\nAguardando um oponente para jogar com voce!\n\nPlay 1 começa jogando!", "Voce esta conectado", INFORMATION_MESSAGE);
                             }else if (usuario.getTipoDePlayer().equals("p2")) {
-                                    JOptionPane.showMessageDialog(painelPrincipal, "Bem vindo " + campoNomeUsuario.getText() + ", \n\nSeu oponente ja esta aguardando!", "Voce esta conectado", INFORMATION_MESSAGE);
+                                    JOptionPane.showMessageDialog(painelPrincipal, "Bem vindo " + campoNomeUsuario.getText() + ", \n\nSeu oponente ja esta aguardando!\n\nPlay 1 começa jogando!", "Voce esta conectado", INFORMATION_MESSAGE);
                             }
                         }else {
                             setTitle("Surakarta - " + nomeUsuario + " - Servidor OFFLINE");
@@ -564,6 +564,8 @@ public class janelaJogoNovo extends javax.swing.JFrame {
                                     areaTextoChat.setText(chat);
                                     usuario.recebeMsg("");
                                 }
+                                
+                                minhaVez = usuario.isMinhaVez();
                                 
                                 //atualiza pontuacao
                                 if(usuario.getTipoDePlayer().equals("p1")) {

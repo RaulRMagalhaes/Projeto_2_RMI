@@ -128,7 +128,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener {
 				for(Pino pino: i) {
 					if(pino != null) {
 						try {
-							if(pino != null && pino.getPlayer().equals(player.getTipoDePlayer())) {
+							if(pino != null && pino.getPlayer().equals(player.getTipoDePlayer()) && player.isMinhaVez() && player.getOponente() != null) {
 								pino.mousePressed(e);
 							}
 						} catch (RemoteException e1) {e1.printStackTrace();}
@@ -173,7 +173,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener {
 				for(Pino pino: i) {
 					if(pino != null) {
 						try {
-							if(pino != null && pino.getPlayer().equals(player.getTipoDePlayer())) {
+							if(pino != null && pino.getPlayer().equals(player.getTipoDePlayer())  && player.isMinhaVez() && player.getOponente() != null) {
 								pino.mouseClicked(e);
 							}
 						} catch (RemoteException e1) {e1.printStackTrace();}
@@ -338,6 +338,9 @@ public class PainelTabuleiro extends JPanel implements ActionListener {
 													matrizPinos[i][j].movePino(pos.x, pos.y);
 													matrizPinos[novaLinha][novaColuna] = matrizPinos[i][j];
 													matrizPinos[i][j] = null;
+													
+													player.setMinhaVez(false);
+													
 												} else if (matrizPinos[novaLinha][novaColuna] != null) {
 													//System.out.print("posiçao ocupada");
 
@@ -355,7 +358,7 @@ public class PainelTabuleiro extends JPanel implements ActionListener {
 														matrizPinos[novaLinha][novaColuna] = matrizPinos[i][j];
 														matrizPinos[i][j] = null;
 														
-														
+														player.setMinhaVez(false);
 														player.setPontos(player.getPontos() + 1);
 													}
 												}

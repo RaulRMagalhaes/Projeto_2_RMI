@@ -76,10 +76,8 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 	public void setMinhaVez(boolean minhaVez) throws RemoteException{
 		this.minhaVez = minhaVez;
 		
-		if(minhaVez) {
-			setMsgStatusTurnoPartida( nomeCliente + " - Sua vez de jogar!");
-		} else {
-			setMsgStatusTurnoPartida("Vez do oponente!");
+		if(oponente != null && this.minhaVez == false) {
+			oponente.setMinhaVez(true);
 		}
 	}
 	
