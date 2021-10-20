@@ -89,12 +89,4 @@ public class Servidor extends UnicastRemoteObject implements ServidorIF {
 		} catch (Exception e){System.err.println("Erro ao registrar servidor");}
 	                        
 	}
-	
-	/*
-	public static void main(String args[]) {
-		try {
-			new Servidor ();
-		} catch (RemoteException e) {}
-	}
-	//*/
 }

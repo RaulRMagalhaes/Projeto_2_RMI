@@ -27,7 +27,7 @@ public class Cliente extends UnicastRemoteObject implements ClienteIF, Runnable{
 	
 	public Cliente(String nomeCliente) throws RemoteException {
 		
-		this.nomeCliente = nomeCliente;   //"Cliente_" + new Random().nextInt(1000);
+		this.nomeCliente = nomeCliente; 
 		
 		conectaCliente();
 		
